@@ -1,0 +1,12 @@
+.signup-container{
+    background-image: url(../Assets/lighting-image.jpg);
+    background-size: cover;
+}
+.partial-bg-signup{
+    border-radius: 0 50% 50% 0;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

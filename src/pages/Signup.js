@@ -1,6 +1,6 @@
 import React ,{useState}from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
-import {Link,useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 import { userSignup } from '../api/Api';
 import './Login.css'; 
 import './Signup.css'; 
@@ -11,7 +11,7 @@ const[ name,setName]=useState({
     email: '',
     password: ''
 })
-const navigate = useNavigate();
+// const navigate = useNavigate();
 
 const signUpSubmit = async (event) => {
     event.preventDefault();

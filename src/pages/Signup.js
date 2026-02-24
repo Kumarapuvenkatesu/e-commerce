@@ -1,13 +1,13 @@
 import React ,{useState}from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import {Link } from 'react-router-dom';
-import { userSignup } from '../api/Api';
+import { AdminSignup } from '../api/Api';
 import './Login.css'; 
 import './Signup.css'; 
 
 const Login = () => {
 const[ name,setName]=useState({
-    username: '',
+    name: '',
     email: '',
     password: ''
 })
@@ -16,7 +16,7 @@ const[ name,setName]=useState({
 const signUpSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response = await userSignup(name);
+        const response = await AdminSignup(name);
         // if(response.status===404){
         //     alert("User already exists");
         // }
@@ -25,7 +25,7 @@ const signUpSubmit = async (event) => {
         // }
         console.log("Signup successful:", response.data);
         setName({
-            username: '',
+            name: '',
             email: '',
             password: ''
         })
@@ -73,12 +73,12 @@ const signUpSubmit = async (event) => {
         </Typography>
         <Box component="form" onSubmit={signUpSubmit} autoComplete="off">
             <TextField
-            label='username'
+            label='name'
             variant="outlined"
             fullWidth
             required
-            value={name.username}
-            onChange={(e) => setName({...name, username: e.target.value})}
+            value={name.name}
+            onChange={(e) => setName({...name, name: e.target.value})}
             margin="normal"
             />
           <TextField

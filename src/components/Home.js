@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { getAllUsers,deleteUserById } from '../api/Api'; 
+import { getAllProducts } from '../api/Api'; 
 import { PopUp } from './PopUp';
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
 
   const fetchData=async()=>{
       try {
-        const response = await getAllUsers();
+        const response = await getAllProducts();
         setData(response.data);
         console.log("Data fetched successfully:", response.data);
       } catch (error) {
@@ -25,17 +25,7 @@ const Home = () => {
     setValue(true);
     setSelectedId(id);
   }
-  const deleteUser=async(id)=>{
-    try {
-     const response = await deleteUserById(id);
-      // console.log("User deleted successfully:", response.data);
-       alert("User deleted successfully");
-       fetchData(); // Refresh the user list after deletion
 
-    } catch (error) {
-      console.error("Error deleting user:", error.response?.data || error.message);
-    }
-  }
 
   return (
     <div>
@@ -50,19 +40,6 @@ const Home = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {data.map((user) => (
-            <tr key={user._id}>
-              <td>{user._id}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>
-                <button onClick={()=>handleEdit(user._id)}>Edit</button>
-                <button onClick={()=>deleteUser(user._id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
       </table>
       {
         value &&(

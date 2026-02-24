@@ -1,7 +1,7 @@
 import React ,{useState}from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import { useNavigate,Link } from 'react-router-dom';
-import { userLogin } from '../api/Api';
+import { AdminLogin } from '../api/Api';
 import './Login.css'; 
 
 const Login = () => {
@@ -12,7 +12,7 @@ const [password, setPassword] = useState('');
 const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await userLogin({ email, password });
+      const response = await AdminLogin({ email, password });
       const token = response.data.token;
       localStorage.setItem("token", token);
       if (response.data.role === "admin") {

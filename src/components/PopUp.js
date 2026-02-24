@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from "react";
-import { getUserById,updateUserById } from "../api/Api";
 
 
 export const PopUp = ({ id, onClose }) => {
@@ -11,16 +10,7 @@ const [formData, setFormData] = useState({
 });
 
 const fetcheduseddata=async()=>{
-    try {
-        const response = await getUserById(id);
-        setFormData({
-            username: response.data.username,
-            email: response.data.email,
-            role: response.data.role
-        });
-    } catch (error) {
-        console.error("Error fetching user data:", error.response?.data || error.message);
-    }
+
 }
 
 useEffect(()=>{
@@ -34,14 +24,7 @@ const handlechange = (e) => {
 
 const handleSubmit = async(e) => {
     e.preventDefault();
-    try {
-        const response = await updateUserById(id, formData);
-        console.log("User updated successfully:", response.data);
-        alert("User updated successfully");
-        onClose();
-    } catch (error) {
-        console.error("Error updating user data:", error.response?.data || error.message);
-    }
+
 }
 
     return (

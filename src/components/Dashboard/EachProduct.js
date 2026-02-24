@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import {getEachProduct} from "../../api/Api";
+
 
 const EachProduct = () => {
   const { id } = useParams();
@@ -8,8 +9,8 @@ const EachProduct = () => {
 
   const fetchEachProduct = async (id) => {
     try {
-      const response = await axios.get(`/products/${id}`);
-      setProduct(response.data);
+      const response = await  getEachProduct(id);
+      setProduct(response.data?.eachProduct);
       console.log("Each product:", response.data);
     } catch (error) {
       console.log("Error fetching product:", error.message);

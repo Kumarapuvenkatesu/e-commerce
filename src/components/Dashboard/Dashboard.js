@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [category, setCategory] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const [favorite, setFavorite] = useState({});
 
   const {wishList, cartProduct, toggleFavorite,addToCartProduct}=useContext(ProductsContext)
 
@@ -22,17 +23,18 @@ const Dashboard = () => {
   const fetchProducts = async () => {
     try {
       const response = await getAllProducts();
-      setProducts(response.data);
-      console.log("Products fetched successfully:", response.data);
+      setProducts(response.data.products);
+      console.log("Products fetched successfully:", response.data?.products);
       const uniqueCategories = [
         "All",
-        ...new Set(response.data.map((p) => p.category.name || 'Uncategorized')),
+        ...new Set(response.data?.products.map((p) => p.category || 'Uncategorized')),
       ];
       setCategory(uniqueCategories);
     } catch (error) {
       console.error("Error fetching products:", error?.message || error);
     }
   };
+  console.log("Products in Dashboard:", category);
 
   useEffect(() => {
     fetchProducts();
@@ -45,16 +47,16 @@ const Dashboard = () => {
 
    const filteredProducts = [...products]
     .filter((p) =>
-      filteredCategory === "All" ? true : p.category.name === filteredCategory
+      filteredCategory === "All" ? true : p.category === filteredCategory
     )
-    .filter((p)=>
-      p.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    // .filter((p)=>
+    //   p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // )
     .sort((a, b) => {
       if (sortOption === "price-asc") return a.price - b.price;
       if (sortOption === "price-desc") return b.price - a.price;
-      if (sortOption === "name-asc") return a.title.localeCompare(b.title);
-      if (sortOption === "name-desc") return b.title.localeCompare(a.title);
+      if (sortOption === "name-asc") return a.name.localeCompare(b.name);
+      if (sortOption === "name-desc") return b.name.localeCompare(a.name);
       return 0;
     });
 
@@ -63,12 +65,12 @@ const Dashboard = () => {
   }
   
    const isFavorited = wishList.some((item) => item.id === filteredProducts.id);
-  // const goToFavorite=(id)=>{
-  //  setFavorite((prev) => ({
-  //   ...prev,
-  //   [id]: !prev[id],
-  // }));
-  // }
+  const goToFavorite=(id)=>{
+   setFavorite((prev) => ({
+    ...prev,
+    [id]: !prev[id],
+  }));
+  }
 
   return (
 
@@ -105,27 +107,27 @@ const Dashboard = () => {
                 {/* <Box className="product-favorite-position" onClick={()=>goToFavorite(product.id)}> 
                   {favorite[product.id]?<FavoriteIcon sx={{color:'red'}}/>:<FavoriteBorderIcon />}
                   </Box> */}
-                  <Box className="product-favorite-position" onClick={()=>toggleFavorite(product)}>
-                    {isFavorited[product.id] ?<FavoriteIcon sx={{color:'red'}}/>:<FavoriteBorderIcon />}
+                  <Box className="product-favorite-position" >
+                    <FavoriteBorderIcon />
                   </Box>
            
 
                  <img
-                   src={product?.images[0]}
-                   alt={product.title}
+                   src={`${process.env.REACT_APP_BASE_URL}${product.image}`}
+                   alt={product.name}
                    className="image-animation"
                  />
 
                </div>
                <div className="product-content">
                  <Link to={`/product/${product._id}`} className="product-link">
-                   <h3 className="product-title">{product.title}</h3>
+                   <h3 className="product-name">{product.name}</h3>
                    <p className="product-description">
-                     {product.description.slice(0, 10)}...{" "}
+                     {product.desc.slice(0, 10)}...{" "}
                      <span className="read-more">Read More</span>
                    </p>
                  </Link>
-                 <div className="product-category">{product.category.name}</div>
+                 <div className="product-category">{product.category}</div>
                  <div className="product-price-section">
                    <div className="product-price">
                      Price
@@ -159,6 +161,7 @@ const Dashboard = () => {
         )
       }
     </div>
+
   );
 };
 
